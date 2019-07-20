@@ -73,6 +73,18 @@ const RootQuery = new GraphQLObjectType({
         // code to get data from DB or other source
         return _.find(authors, { id })
       }
+    },
+    books: {
+      type: new GraphQLList(BookType),
+      resolve() {
+        return books
+      }
+    },
+    authors: {
+      type: new GraphQLList(BookType),
+      resolve() {
+        return authors
+      }
     }
   }
 })
