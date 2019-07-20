@@ -1,12 +1,25 @@
 const graphql = require('graphql')
 const _ = require('lodash')
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID } = graphql
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLID,
+  GraphQLInt
+} = graphql
 
 const books = [
-  { name: 'Dummy 1', genre: 'whatever', id: '1' },
-  { name: 'Dummy 2', genre: 'whatever1', id: '2' },
-  { name: 'Dummy 3', genre: 'whatever', id: '3' },
-  { name: 'Dummy 4', genre: 'whatever1', id: '4' }
+  { name: 'Dummy 1', genre: 'whatever', id: '1', authorId: '1' },
+  { name: 'Dummy 2', genre: 'whatever1', id: '2', authorId: '2' },
+  { name: 'Dummy 3', genre: 'whatever', id: '3', authorId: '3' },
+  { name: 'Dummy 4', genre: 'whatever1', id: '4', authorId: '4' }
+]
+
+const authors = [
+  { name: 'Tommy Doe', age: '32', id: '1' },
+  { name: 'Jhon Doe', age: '42', id: '2' },
+  { name: 'Ana Doe', age: '38', id: '3' },
+  { name: 'Nemo Doe', age: '11', id: '4' }
 ]
 
 const BookType = new GraphQLObjectType({
@@ -14,7 +27,23 @@ const BookType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    genre: { type: GraphQLString }
+    genre: { type: GraphQLString },
+    author: {
+      type: AuthorType,
+      resolve(parent) {
+        console.log(parent)
+        return _.find(authors, { id: parent.authorId })
+      }
+    }
+  })
+})
+
+const AuthorType = new GraphQLObjectType({
+  name: 'Author',
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    age: { type: GraphQLInt }
   })
 })
 
@@ -24,9 +53,17 @@ const RootQuery = new GraphQLObjectType({
     book: {
       type: BookType,
       args: { id: { type: GraphQLID } },
-      resolve(parent, args) {
+      resolve(parent, { id }) {
         // code to get data from DB or other source
-        return _.find(books, { id: args.id })
+        return _.find(books, { id })
+      }
+    },
+    author: {
+      type: AuthorType,
+      args: { id: { type: GraphQLID } },
+      resolve({ id }) {
+        // code to get data from DB or other source
+        return _.find(authors, { id })
       }
     }
   }
