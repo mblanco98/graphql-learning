@@ -7,9 +7,7 @@ const mongoose = require('mongoose')
 const app = express()
 const PORT = process.env.PORT || 4000 || 4002 || 5002
 
-mongoose.connect(
-  'mongodb+srv://dbRESTUser:<password>@cluster0-rtfsn.mongodb.net/test?retryWrites=true&w=majority'
-)
+mongoose.connect(process.env.DB_USER)
 
 mongoose.connection.once('open', () => {
   console.log(chalk.red('Connected to database!'))
