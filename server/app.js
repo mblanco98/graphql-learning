@@ -2,6 +2,7 @@ const express = require('express')
 const graphqlHTTP = require('express-graphql')
 const mongoose = require('mongoose')
 const chalk = require('chalk')
+const cors = require('cors')
 const schema = require('./schema/schema.js')
 
 require('dotenv').config()
@@ -9,6 +10,10 @@ require('dotenv').config()
 const app = express()
 const PORT = process.env.PORT || 4000 || 4002 || 5002
 
+// Allow cross-origin request
+app.use(cors())
+
+// Connect to mongoDB
 mongoose
   .connect(process.env.DB_USER, { useNewUrlParser: true })
   // eslint-disable-next-line
