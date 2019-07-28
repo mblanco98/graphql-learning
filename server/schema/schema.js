@@ -1,4 +1,5 @@
 const graphql = require('graphql')
+// eslint-disable-next-line
 const _ = require('lodash')
 const Book = require('../models/book')
 const Author = require('../models/author')
@@ -100,7 +101,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         name: { type: new GraphQLNonNull(GraphQLString) },
         genre: { type: new GraphQLNonNull(GraphQLString) },
-        author: { type: new GraphQLNonNull(GraphQLString) },
         authorId: { type: new GraphQLNonNull(GraphQLID) }
       },
       resolve(parent, { name, genre, author, authorId }) {
