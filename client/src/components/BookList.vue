@@ -23,16 +23,8 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { getBooksQuery } from '../queries/index'
 
-const getBooksQuery = gql`
-  {
-    books {
-      name
-      genre
-    }
-  }
-`
 export default {
   name: 'BookList',
   data: () => ({
